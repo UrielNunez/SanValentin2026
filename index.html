@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Para la Motsi!</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ffd6e8, #ffeef5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* CONTENEDOR */
+      .container {
+        text-align: center;
+        width: 100%;
+        position: relative;
+      }
+
+      /* ❤️ CORAZÓN */
+      .heart-wrapper {
+        width: 260px;
+        margin: auto;
+        cursor: pointer;
+        animation: heartbeat 1.2s infinite;
+      }
+
+      @keyframes heartbeat {
+        0% {
+          transform: scale(1);
+        }
+        25% {
+          transform: scale(1.05);
+        }
+        40% {
+          transform: scale(1);
+        }
+        60% {
+          transform: scale(1.08);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .heart-svg {
+        width: 100%;
+        overflow: visible;
+        filter: drop-shadow(0px 20px 30px rgba(216, 27, 96, 0.35));
+      }
+
+      /* TEXTO */
+      .info {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #b30059;
+        padding: 0 20px;
+      }
+
+      /* 💌 CARTA */
+      .letter {
+        display: none;
+        position: relative;
+        background: linear-gradient(180deg, #ffffff, #fff7fb);
+        padding: 30px 25px 100px 25px;
+        border-radius: 25px;
+        width: 92%;
+        max-width: 420px;
+
+        max-height: 82vh;
+        overflow-y: auto;
+
+        margin: auto;
+        box-shadow:
+          0 25px 60px rgba(255, 105, 180, 0.25),
+          0 8px 20px rgba(0, 0, 0, 0.1);
+
+        animation: fadeIn 0.8s forwards;
+        backdrop-filter: blur(4px);
+      }
+
+      .letter h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        letter-spacing: 1px;
+      }
+
+      .letter p {
+        font-size: 15px;
+        line-height: 1.7;
+        text-align: left;
+        color: #555;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .buttons {
+        position: sticky;
+        bottom: 0;
+        background: linear-gradient(180deg, transparent, #fff7fb 40%);
+        padding-top: 20px;
+        margin-top: 30px;
+        height: 80px;
+      }
+
+      button {
+        padding: 12px 22px;
+        border: none;
+        border-radius: 30px;
+        font-size: 15px;
+        cursor: pointer;
+        margin: 8px;
+        transition: all 0.3s ease;
+      }
+
+      #yes {
+        background: linear-gradient(45deg, #ff2e63, #ff6f91);
+        color: white;
+        box-shadow: 0 8px 18px rgba(255, 46, 99, 0.4);
+      }
+
+      #yes:hover {
+        transform: scale(1.05);
+      }
+
+      #no {
+        background: #e0e0e0;
+        position: absolute;
+      }
+
+      /* 🌸 Overlay romántico */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 214, 232, 0.6);
+        backdrop-filter: blur(6px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 20;
+      }
+
+      /* Tarjeta interna del overlay */
+      .overlay-card {
+        background: #fff;
+        padding: 25px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 350px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        animation: fadeIn 0.6s forwards;
+      }
+
+      /* 💖 Corazones cayendo */
+      .falling-heart {
+        position: fixed;
+        top: -150px;
+        pointer-events: none;
+        animation: fall linear forwards;
+        will-change: transform;
+      }
+
+      @keyframes fall {
+        from {
+          transform: translateY(-150px);
+          opacity: 1;
+        }
+        to {
+          transform: translateY(120vh);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="heartSection">
+        <div class="heart-wrapper" id="heartWrapper">
+          <svg
+            viewBox="0 0 700 600"
+            preserveAspectRatio="xMidYMid meet"
+            class="heart-svg"
+          >
+            <defs>
+              <linearGradient id="heartGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ff4d6d" />
+                <stop offset="100%" stop-color="#c1121f" />
+              </linearGradient>
+            </defs>
+
+            <path
+              id="heartShape"
+              d="M350 520
+   L90 300
+   C10 230 40 120 150 100
+   C230 90 300 150 350 210
+   C400 150 470 90 550 100
+   C660 120 690 230 610 300
+   Z"
+              fill="white"
+              stroke="#b30000"
+              stroke-width="14"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+            />
+
+            <clipPath id="clipHeart">
+              <path
+                d="M350 520
+   L90 300
+   C10 230 40 120 150 100
+   C230 90 300 150 350 210
+   C400 150 470 90 550 100
+   C660 120 690 230 610 300
+   Z"
+              />
+            </clipPath>
+
+            <rect
+              id="fillRect"
+              x="0"
+              y="600"
+              width="700"
+              height="600"
+              fill="url(#heartGradient)"
+              clip-path="url(#clipHeart)"
+            />
+          </svg>
+        </div>
+
+        <div class="info">
+          Entre más clicks des, más se llenará el corazón ❤️, Completalo! <br />
+          ¡Pero cuidado! Si dejas de hacer click por un momento, el corazón se
+          vaciará y tendrás que empezar de nuevo 😢
+        </div>
+      </div>
+
+      <div class="letter" id="letter">
+        <h2 style="color: #ff2e63">Para la Motsi! ❤️</h2>
+        <p style="color: #555">
+          Hola, Motsi. Espero que estés teniendo un buen día. El motivo de este
+          detalle es para demostrarte cuánto me gustas y cuánto te amo. Esta es
+          una pequeña carta virtual donde sabrás cuánto me gustas... Desde hace
+          ya casi 7 años —bueno, 6 años y 11 meses casi— me has gustado un
+          montón, Motsi. No imaginas cuánto, la verdad. Desde que somos
+          amiguitos me has gustado muchísimo y, la verdad, eres lo mejor que me
+          pudo haber pasado. Desde ese momento supe que serías con quien quería
+          compartir momentos, recuerdos y una vida juntos. Sé que este tiempo ha
+          sido complicado; hemos tenido altas y bajas, pero a pesar de eso las
+          hemos superado y nos hemos mantenido aquí, uno al lado del otro. Y la
+          verdad agradezco a Dios, al destino, a quien sea, que nos haya juntado
+          y haya dicho: “Eeeey, ustedes están destinados a estar juntos”. Y es
+          la verdad, Motsi, nacimos el uno para el otro. Yo no me veo con nadie
+          más que no sea contigo. No me veo compartiendo o haciendo detalles
+          para alguien más que no seas tú, Motsi. Todo, todo, todo lo que quiero
+          es hacerte la mujer más feliz, más amada, más querida, más hermosa,
+          más preciosa, más chula, más bella. Quiero darte todo de mí y
+          demostrarte que realmente sigo y seguiré perdidamente enamorado de ti.
+          De verdad, tú eres mi mejor amiga, mi compañera, mi mujer, mi alma
+          gemela, mi todo, Motsi. Tú lo eres todo para mí. Solo soy y existo
+          para ti, Motsi, y para nadie más. De verdad espero que tengas una
+          idea, o te des una idea, de cuánto estoy enamorado de ti: de tu
+          sonrisa, de tu aroma, de tu cuerpo, de tu cara, de tu cabello, de tus
+          pies, de tus dedos, de tu forma de ser, de tu amor, de tu cariño, de
+          la conexión sentimental que tenemos, de lo rico que me haces el amor,
+          de experimentar cosas nuevas, de vivir muchas aventuras, de que
+          existas para mí y yo existir para ti, que seamos el uno para el
+          otro... Estoy completamente y eternamente enamorado de ti y solo de
+          ti, Motsi. Y de verdad espero que lo entiendas: para mí no existe
+          mujer tan perfecta como tú. Por eso y mucho más quiero hacerte una
+          pregunta muy importante, Motsi… ¿Estás lista?<br /><br />
+
+          ¿Quieres ser mi San Valentín por sexta vez consecutiva?
+        </p>
+
+        <div class="buttons">
+          <button id="yes">Sí 💖</button>
+          <button id="no">No 😢</button>
+        </div>
+      </div>
+
+      <div class="overlay" id="overlay">
+        <div class="overlay-card">
+          <h2 style="color: #ff2e63">Eeeh Motsi!! 🥺</h2>
+          <p style="color: #555">
+            ¿Por qué dejaste de dar click?<br /><br />
+            ¿No quieres descubrir que pasa si lo completas? ❤️
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let clicks = 0;
+      let maxClicks = 30;
+      let fillRect = document.getElementById("fillRect");
+      let heartWrapper = document.getElementById("heartWrapper");
+      let letter = document.getElementById("letter");
+      let heartSection = document.getElementById("heartSection");
+      let noBtn = document.getElementById("no");
+      let overlay = document.getElementById("overlay");
+
+      let inactivityTimer;
+
+      /* Corazones cayendo */
+      function createFallingHeart() {
+        let element = document.createElement("div");
+        element.classList.add("falling-heart");
+
+        // 50% probabilidad corazón / 50% Motsi
+        if (Math.random() > 0.5) {
+          element.innerHTML = "❤️";
+        } else {
+          element.innerHTML = "Te Amo Motsi";
+          element.style.fontWeight = "bold";
+          element.style.color = "#c1121f";
+          element.style.textShadow = "0 4px 10px rgba(193,18,31,0.2)";
+        }
+
+        // Posición horizontal aleatoria
+        element.style.left = Math.random() * 100 + "vw";
+
+        // Tamaño variable
+        let size = Math.random() * 25 + 18;
+        element.style.fontSize = size + "px";
+
+        // Duración variable
+        element.style.animationDuration = Math.random() * 2 + 2 + "s";
+
+        document.body.appendChild(element);
+
+        setTimeout(() => element.remove(), 4000);
+      }
+
+      setInterval(createFallingHeart, 80);
+
+      /* Reinicio romántico */
+      function resetHeart() {
+        clicks = 0;
+        fillRect.setAttribute("y", 600);
+        overlay.style.display = "flex";
+        overlay.style.opacity = "1";
+        setTimeout(() => {
+          overlay.style.display = "none";
+        }, 2000);
+      }
+
+      /* Inactividad */
+      function startInactivity() {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(() => {
+          if (clicks > 0 && clicks < maxClicks) {
+            resetHeart();
+          }
+        }, 500);
+      }
+
+      /* Click corazón */
+      heartWrapper.addEventListener("click", () => {
+        clicks++;
+
+        let percent = clicks / maxClicks;
+        let newY = 600 - 600 * percent;
+        fillRect.setAttribute("y", newY);
+
+        startInactivity();
+
+        if (clicks >= maxClicks) {
+          heartSection.style.display = "none";
+          letter.style.display = "block";
+        }
+      });
+
+      /* Botón NO */
+      noBtn.addEventListener("mouseenter", () => {
+        let x = Math.random() * 200 - 100;
+        let y = Math.random() * 200 - 50;
+        noBtn.style.transform = `translate(${x}px,${y}px)`;
+      });
+
+      /* Botón SÍ */
+      document.getElementById("yes").addEventListener("click", () => {
+        letter.innerHTML = `
+    <h2 style="color:#ff2e63;">Sabía que dirías que sí 💖</h2>
+    <p>Nos vemos este sábado... ponte hermosa 😌✨</p>
+    <p>TE AMO</p>
+    `;
+      });
+    </script>
+  </body>
+</html>
